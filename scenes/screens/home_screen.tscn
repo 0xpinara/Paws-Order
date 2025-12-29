@@ -1,0 +1,207 @@
+[gd_scene load_steps=2 format=3 uid="uid://home_screen"]
+
+[ext_resource type="Script" path="res://scripts/screens/home_screen.gd" id="1_script"]
+
+[node name="HomeScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="RoomLayer" type="Node2D" parent="."]
+
+[node name="Background" type="ColorRect" parent="RoomLayer"]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.96, 0.94, 0.9, 1)
+
+[node name="Floor" type="ColorRect" parent="RoomLayer"]
+offset_top = 450.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.76, 0.6, 0.42, 1)
+
+[node name="Wall" type="ColorRect" parent="RoomLayer"]
+offset_right = 800.0
+offset_bottom = 450.0
+color = Color(0.85, 0.8, 0.7, 1)
+
+[node name="FurnitureContainer" type="Node2D" parent="RoomLayer"]
+
+[node name="PetContainer" type="Node2D" parent="RoomLayer"]
+
+[node name="TopBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 70.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="PetName" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+text = "Pet Name"
+
+[node name="Spacer" type="Control" parent="TopBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CoinIcon" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "🪙"
+
+[node name="CoinLabel" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.6, 0.5, 0.1, 1)
+text = "500"
+
+[node name="StatsPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.25
+anchor_bottom = 0.35
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="StatsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="HealthLabel" type="Label" parent="StatsPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "❤️ Health"
+
+[node name="HealthBar" type="ProgressBar" parent="StatsPanel/VBox"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="HappyLabel" type="Label" parent="StatsPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "😊 Happy"
+
+[node name="HappyBar" type="ProgressBar" parent="StatsPanel/VBox"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="HygieneLabel" type="Label" parent="StatsPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "🛁 Clean"
+
+[node name="HygieneBar" type="ProgressBar" parent="StatsPanel/VBox"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="BottomBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBox" type="HBoxContainer" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -35.0
+offset_right = 180.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="FeedButton" type="Button" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🍎"
+
+[node name="WashButton" type="Button" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🛁"
+
+[node name="PlayButton" type="Button" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🎾"
+
+[node name="ShopButton" type="Button" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🛒"
+
+[node name="InventoryButton" type="Button" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🎒"
+
+[node name="MenuButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 80.0
+offset_right = -10.0
+offset_bottom = 130.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "⚙️"
+
+[connection signal="pressed" from="BottomBar/HBox/FeedButton" to="." method="_on_feed_pressed"]
+[connection signal="pressed" from="BottomBar/HBox/WashButton" to="." method="_on_wash_pressed"]
+[connection signal="pressed" from="BottomBar/HBox/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="BottomBar/HBox/ShopButton" to="." method="_on_shop_pressed"]
+[connection signal="pressed" from="BottomBar/HBox/InventoryButton" to="." method="_on_inventory_pressed"]
+[connection signal="pressed" from="MenuButton" to="." method="_on_menu_pressed"]
+

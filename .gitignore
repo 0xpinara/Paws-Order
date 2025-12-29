@@ -1,0 +1,35 @@
+# Godot-specific ignores
+.godot/
+.import/
+export_presets.cfg.bak
+*.tmp
+
+# Exported builds
+exports/
+builds/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+*.swp
+*.swo
+*~
+
+# Large extracted assets (keep the extraction tools, but not the output)
+assets/sprites/extracted/
+
+# Logs
+*.log
+tools/extraction_log.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.temp
+

@@ -1,0 +1,137 @@
+[gd_scene load_steps=2 format=3 uid="uid://shop_screen"]
+
+[ext_resource type="Script" path="res://scripts/screens/shop_screen.gd" id="1_script"]
+
+[node name="ShopScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.95, 0.92, 0.85, 1)
+
+[node name="Header" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 70.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="BackButton" type="Button" parent="Header/HBox"]
+custom_minimum_size = Vector2(60, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "←"
+
+[node name="Title" type="Label" parent="Header/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.4, 0.3, 0.2, 1)
+text = "Shop"
+vertical_alignment = 1
+
+[node name="CoinIcon" type="Label" parent="Header/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🪙"
+vertical_alignment = 1
+
+[node name="CoinLabel" type="Label" parent="Header/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.6, 0.5, 0.1, 1)
+text = "500"
+vertical_alignment = 1
+
+[node name="CategoryTabs" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 75.0
+offset_bottom = 125.0
+grow_horizontal = 2
+theme_override_constants/separation = 5
+
+[node name="FoodTab" type="Button" parent="CategoryTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+theme_override_font_sizes/font_size = 14
+text = "Food"
+
+[node name="FurnitureTab" type="Button" parent="CategoryTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+theme_override_font_sizes/font_size = 14
+text = "Furniture"
+
+[node name="DecoTab" type="Button" parent="CategoryTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+theme_override_font_sizes/font_size = 14
+text = "Decor"
+
+[node name="ClothesTab" type="Button" parent="CategoryTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+theme_override_font_sizes/font_size = 14
+text = "Clothes"
+
+[node name="ToysTab" type="Button" parent="CategoryTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+theme_override_font_sizes/font_size = 14
+text = "Toys"
+
+[node name="ItemsContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemsGrid" type="GridContainer" parent="ItemsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 3
+
+[connection signal="pressed" from="Header/HBox/BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="CategoryTabs/FoodTab" to="." method="_on_category_pressed" binds= [0]]
+[connection signal="pressed" from="CategoryTabs/FurnitureTab" to="." method="_on_category_pressed" binds= [1]]
+[connection signal="pressed" from="CategoryTabs/DecoTab" to="." method="_on_category_pressed" binds= [2]]
+[connection signal="pressed" from="CategoryTabs/ClothesTab" to="." method="_on_category_pressed" binds= [3]]
+[connection signal="pressed" from="CategoryTabs/ToysTab" to="." method="_on_category_pressed" binds= [4]]
+
