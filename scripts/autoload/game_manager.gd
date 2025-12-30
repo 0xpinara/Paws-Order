@@ -243,3 +243,4 @@ func reset_game() -> void:
 	SaveManager.delete_save()
 	print("[GameManager] Game reset")
 
+

@@ -126,3 +126,4 @@ func delete_save() -> void:
 		DirAccess.remove_absolute(SAVE_PATH)
 		print("[SaveManager] Save file deleted")
 
+

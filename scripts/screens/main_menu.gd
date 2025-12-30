@@ -39,3 +39,4 @@ func _on_settings_pressed() -> void:
 	# TODO: Show settings popup
 	print("[MainMenu] Settings pressed")
 
+

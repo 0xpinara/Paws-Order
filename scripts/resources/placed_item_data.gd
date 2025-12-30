@@ -11,3 +11,4 @@ class_name PlacedItemData
 @export var contained_item: int = 0  # For containers (boxes, etc.)
 @export var contained_amount: int = 0
 
+

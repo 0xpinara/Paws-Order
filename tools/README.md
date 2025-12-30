@@ -33,7 +33,19 @@ brew install openjdk
 
 ### Step 3: Run Batch Extraction
 
-You have **two options**:
+**Recommended: Background Mode (No GUI Windows)**
+
+The extraction now runs in headless mode to prevent Java GUI windows from opening:
+
+```bash
+cd /Users/pa/PetSocietyMobile/tools
+./run_extraction_background.sh
+```
+
+This runs completely in the background with no windows. Monitor progress with:
+```bash
+./monitor_extraction.sh
+```
 
 ---
 
@@ -41,22 +53,29 @@ You have **two options**:
 
 The Python script provides progress tracking, parallel processing, and resume capability.
 
+**Background Mode (Recommended):**
+```bash
+cd /Users/pa/PetSocietyMobile/tools
+./run_extraction_background.sh
+```
+
+**Manual Run:**
 ```bash
 cd /Users/pa/PetSocietyMobile/tools
 
-# First, update the JPEXS_JAR_PATH in extract_assets.py if needed
-# Then run:
-
 # Test with 10 files first
-python3 extract_assets.py --test
+python3 extract_assets.py --test --yes
 
 # If successful, run full extraction (this takes several hours!)
-python3 extract_assets.py --parallel 4
+python3 extract_assets.py --yes --parallel 4
 ```
+
+**Important:** The script uses `-Djava.awt.headless=true` to prevent GUI windows. All extraction happens silently.
 
 **Script options:**
 - `--test` - Only process 10 files (for testing)
 - `--parallel 4` - Use 4 parallel processes (adjust based on your CPU)
+- `--yes` - Skip confirmation prompt (required for background mode)
 - `--start 1000` - Start from file #1000 (for resuming)
 - `--limit 500` - Only process 500 files
 

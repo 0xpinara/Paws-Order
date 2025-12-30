@@ -78,3 +78,4 @@ func get_experience_for_next_level() -> int:
 func get_overall_wellbeing() -> float:
 	return (health + happiness + hygiene) / 3.0
 
+

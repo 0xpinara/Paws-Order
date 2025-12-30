@@ -1,0 +1,5 @@
+# Ignore large asset directories during scanning
+assets/sprites/extracted/
+assets/sprites/lookup/
+*.swf
+

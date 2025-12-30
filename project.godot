@@ -14,7 +14,7 @@ config/name="Pet Society"
 config/description="A remake of the classic Pet Society game"
 config/version="1.0.0"
 run/main_scene="res://scenes/screens/main_menu.tscn"
-config/features=PackedStringArray("4.2", "Mobile")
+config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://assets/ui/icon.png"
 
 [autoload]
@@ -23,6 +23,7 @@ GameManager="*res://scripts/autoload/game_manager.gd"
 SaveManager="*res://scripts/autoload/save_manager.gd"
 AudioManager="*res://scripts/autoload/audio_manager.gd"
 ItemDatabase="*res://scripts/autoload/item_database.gd"
+AssetLoader="*res://scripts/autoload/asset_loader.gd"
 
 [display]
 
@@ -42,4 +43,3 @@ pointing/emulate_touch_from_mouse=true
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.2, 0.6, 0.8, 1)
-

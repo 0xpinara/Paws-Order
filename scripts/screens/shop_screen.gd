@@ -169,3 +169,4 @@ func _show_purchase_feedback(item_name: String) -> void:
 	tween.parallel().tween_property(label, "modulate:a", 0.0, 0.8)
 	tween.tween_callback(label.queue_free)
 
+

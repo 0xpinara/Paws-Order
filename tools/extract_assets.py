@@ -2,7 +2,8 @@
 """
 Pet Society Asset Batch Extractor
 ==================================
-Automatically extracts all images from SWF files using JPEXS Free Flash Decompiler.
+Automatically extracts ALL asset types (images, shapes, sprites, buttons, frames) 
+from SWF files using JPEXS Free Flash Decompiler. This ensures zero loss of visual assets.
 
 SETUP INSTRUCTIONS:
 1. Install Java if not already installed:
@@ -82,7 +83,7 @@ def print_header():
 {Colors.CYAN}╔══════════════════════════════════════════════════════════════════╗
 ║           Pet Society Asset Batch Extractor                       ║
 ║                                                                    ║
-║   Extracts PNG images from Flash SWF files automatically          ║
+║   Extracts ALL assets (images, shapes, sprites) from SWF files    ║
 ╚══════════════════════════════════════════════════════════════════╝{Colors.END}
 """)
 
@@ -131,12 +132,12 @@ def find_jpexs():
     return None
 
 def check_java():
-    """Check if Java is installed"""
+    """Check if Java is installed and get the path"""
     # Check standard java first
     try:
         result = subprocess.run(["java", "-version"], 
                               capture_output=True, text=True, timeout=5)
-        return True
+        return True, "java"
     except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
     
@@ -146,45 +147,72 @@ def check_java():
         try:
             result = subprocess.run([brew_java, "-version"], 
                                   capture_output=True, text=True, timeout=5)
-            return True
+            return True, brew_java
         except (FileNotFoundError, subprocess.TimeoutExpired):
             pass
     
-    return False
+    return False, None
 
 def extract_single_swf(args):
-    """Extract images from a single SWF file"""
+    """
+    Extract ALL asset types from a single SWF file
+    Extracts: images, shapes, sprites, buttons, frames
+    """
     swf_path, output_subdir, jpexs_path = args
     
     try:
         # Create output directory
         os.makedirs(output_subdir, exist_ok=True)
         
-        # Run JPEXS to extract images
-        # JPEXS syntax: -export <itemtypes> <outdirectory> <infile_or_directory>
         # Use java from PATH (which should include Homebrew's openjdk)
         java_cmd = "java"
-        # Try to use Homebrew's java if available
         if os.path.exists("/opt/homebrew/opt/openjdk/bin/java"):
             java_cmd = "/opt/homebrew/opt/openjdk/bin/java"
         
+        # Extract MULTIPLE asset types to get everything
+        # JPEXS syntax: -export <itemtypes> <outdirectory> <infile_or_directory>
+        # Types: image, shape, sprite, button, frame
+        # We extract all visual types at once
+        asset_types = "image,shape,sprite,button,frame"
+        
+        # Run in HEADLESS mode to prevent GUI windows from opening
+        # -Djava.awt.headless=true prevents all GUI components and window creation
+        # Redirect output to /dev/null to prevent any window creation attempts
         cmd = [
-            java_cmd, "-jar", jpexs_path,
-            "-export", "image",
+            java_cmd,
+            "-Djava.awt.headless=true",  # No GUI mode - prevents window creation
+            "-jar", jpexs_path,
+            "-export", asset_types,
             output_subdir,
             swf_path
         ]
         
+        # Run in headless mode with output redirected to prevent any window creation
+        # Use PIPE to capture output (but we don't need to use it)
+        # This prevents any GUI windows from being created
+        env = os.environ.copy()
+        env["JAVA_TOOL_OPTIONS"] = "-Djava.awt.headless=true"
+        # On macOS, also ensure no display-related env vars interfere
+        if sys.platform == 'darwin':
+            env.pop("DISPLAY", None)  # Remove DISPLAY if present
+        
         result = subprocess.run(
             cmd, 
-            capture_output=True, 
-            text=True, 
-            timeout=60  # 60 second timeout per file
+            stdout=subprocess.DEVNULL,  # Discard stdout completely
+            stderr=subprocess.DEVNULL,  # Discard stderr completely (no windows)
+            timeout=120,  # Increased timeout for multiple types
+            env=env
         )
         
-        # Count extracted files
-        extracted_count = len(list(Path(output_subdir).glob("*.png")))
-        extracted_count += len(list(Path(output_subdir).glob("*.jpg")))
+        # Count ALL extracted visual files (including subdirectories)
+        extracted_count = 0
+        # JPEXS organizes exports into subdirectories: images/, shapes/, sprites/, etc.
+        # Count PNG/JPEG (from images, sprites, buttons, frames)
+        extracted_count += len(list(Path(output_subdir).rglob("*.png")))  # rglob = recursive
+        extracted_count += len(list(Path(output_subdir).rglob("*.jpg")))
+        extracted_count += len(list(Path(output_subdir).rglob("*.jpeg")))
+        # Count SVG (from shapes - we'll need to convert these later or use as-is)
+        extracted_count += len(list(Path(output_subdir).rglob("*.svg")))
         
         if result.returncode == 0 and extracted_count > 0:
             return (True, os.path.basename(swf_path), extracted_count, None)
@@ -194,7 +222,7 @@ def extract_single_swf(args):
                 shutil.rmtree(output_subdir)
             except:
                 pass
-            return (False, os.path.basename(swf_path), 0, "No images found")
+            return (False, os.path.basename(swf_path), 0, "No assets found")
         else:
             return (False, os.path.basename(swf_path), 0, result.stderr[:100])
             
@@ -218,7 +246,8 @@ def main():
     
     # Check Java
     print(f"{Colors.BLUE}Checking requirements...{Colors.END}")
-    if not check_java():
+    java_available, java_path = check_java()
+    if not java_available:
         print(f"\n{Colors.RED}✗ Java is not installed!{Colors.END}")
         print("  Install Java with: brew install openjdk")
         print("  Or download from: https://www.java.com/download/")

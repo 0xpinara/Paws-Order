@@ -205,3 +205,4 @@ text = "⚙️"
 [connection signal="pressed" from="BottomBar/HBox/InventoryButton" to="." method="_on_inventory_pressed"]
 [connection signal="pressed" from="MenuButton" to="." method="_on_menu_pressed"]
 
+

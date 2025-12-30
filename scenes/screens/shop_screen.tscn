@@ -135,3 +135,4 @@ columns = 3
 [connection signal="pressed" from="CategoryTabs/ClothesTab" to="." method="_on_category_pressed" binds= [3]]
 [connection signal="pressed" from="CategoryTabs/ToysTab" to="." method="_on_category_pressed" binds= [4]]
 
+

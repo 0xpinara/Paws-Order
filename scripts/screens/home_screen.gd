@@ -148,30 +148,56 @@ func _create_furniture_node(furniture: Dictionary, item: ItemData) -> Node2D:
 	node.set_meta("furniture_id", furniture["id"])
 	node.set_meta("item_id", furniture["item_id"])
 	
-	# Placeholder visual (colored rect based on category)
-	var visual = ColorRect.new()
-	visual.size = Vector2(80, 60)
-	visual.position = Vector2(-40, -30)  # Center it
+	# Try to load real asset texture
+	var texture: Texture2D = null
 	
-	# Color based on item category
-	match item.category:
-		ItemDatabase.ItemCategory.FURNITURE:
-			visual.color = Color(0.55, 0.4, 0.25)  # Brown for furniture
-		ItemDatabase.ItemCategory.DECORATION:
-			visual.color = Color(0.7, 0.6, 0.8)  # Purple for decor
-		_:
-			visual.color = Color(0.6, 0.6, 0.6)  # Gray default
+	# Try loading by item hash if available (convert to string for lookup)
+	if item.item_hash != 0:
+		# Convert hash to hex string (same format as SWF filenames might be)
+		var hash_str = "%X" % item.item_hash
+		# Try loading texture by hash string (might need adjustment based on actual mapping)
+		texture = AssetLoader.load_texture_by_filename(hash_str)
 	
-	node.add_child(visual)
+	# Try loading by sprite_path if set
+	if texture == null and not item.sprite_path.is_empty():
+		texture = AssetLoader.load_texture(item.sprite_path)
 	
-	# Add label with item name
-	var label = Label.new()
-	label.text = item.name
-	label.add_theme_font_size_override("font_size", 10)
-	label.position = Vector2(-40, 35)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.custom_minimum_size.x = 80
-	node.add_child(label)
+	# If we have a texture, use it
+	if texture != null:
+		var sprite = Sprite2D.new()
+		sprite.texture = texture
+		sprite.scale = Vector2(0.5, 0.5)  # Scale down if needed
+		node.add_child(sprite)
+	else:
+		# Fallback: Placeholder visual (colored rect based on category)
+		var visual = ColorRect.new()
+		visual.size = Vector2(80, 60)
+		visual.position = Vector2(-40, -30)  # Center it
+		
+		# Color based on item category
+		match item.category:
+			ItemDatabase.ItemCategory.FURNITURE:
+				visual.color = Color(0.55, 0.4, 0.25)  # Brown for furniture
+			ItemDatabase.ItemCategory.DECORATION:
+				visual.color = Color(0.7, 0.6, 0.8)  # Purple for decor
+			ItemDatabase.ItemCategory.FOOD:
+				visual.color = Color(1.0, 0.8, 0.6)  # Orange/yellow for food
+			ItemDatabase.ItemCategory.TOY:
+				visual.color = Color(0.6, 0.8, 1.0)  # Light blue for toys
+			_:
+				visual.color = Color(0.6, 0.6, 0.6)  # Gray default
+		
+		node.add_child(visual)
+	
+	# Add label with item name (only if no texture or as debug info)
+	if texture == null:
+		var label = Label.new()
+		label.text = item.name
+		label.add_theme_font_size_override("font_size", 10)
+		label.position = Vector2(-40, 35)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.custom_minimum_size.x = 80
+		node.add_child(label)
 	
 	# Make interactive in edit mode
 	if edit_mode:
@@ -296,4 +322,5 @@ func _show_action_effect(text: String) -> void:
 	tween.tween_property(label, "position:y", label.position.y - 100, 1.0)
 	tween.parallel().tween_property(label, "modulate:a", 0.0, 1.0)
 	tween.tween_callback(label.queue_free)
+
 
